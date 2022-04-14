@@ -1,5 +1,4 @@
 <template>
-    <!-- <p v-if="errors">{{errors[0]}}</p> -->
     <div class="search-body">
         <input 
             v-model="searchGif"
@@ -9,21 +8,18 @@
 </template>
 
 <script>
-// import buscar from '@/assets/buscar.png'
-// import Search from '@/shared/components/NavBar.vue';
 export default {
+    emits:['searchproduct'],
     data(){
         return{
             errors: [],
-            searchElement: [],
             searchGif: ''
         }
     },
     methods:{
         agregarSearch(){
-            this.searchElement.push(this.searchGif)
-            console.log(this.searchElement);
-            return this.$emit('searchEmit', this.searchGif)
+            this.$emit('searchproduct', this.searchGif)
+            this.clearData()
         },
         checkSearch(){
             this.searchGif != '' ? this.agregarSearch() : this.errors.push('palabra requerida')

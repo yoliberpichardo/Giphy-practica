@@ -1,11 +1,14 @@
 <template>
+  <SearchButton
+    @searchproduct="searchView($event)"
+  />
   <div class="body-giphy">
     <h1>Gifs pequeños</h1>
     <div class="img-container">
       <div class="img-little">
         <img
           v-for="gif of giphLittle" :key="gif.index"
-           :src="gif" 
+           :src="gif"   
           alt="">
       </div>
       <h1>Gifs medianos</h1>
@@ -28,15 +31,21 @@
 
 <script>
 import getApi from '../helpers/getApi';
+import SearchButton from '@/shared/components/SearchButton.vue';
 
 export default {
+   name: 'GiphyHome',
+    components:{
+      SearchButton
+    },
     data(){
       return{
         getGiphy: Promise,
         giphy: Object,
         giphLittle: [],
         giphMedium: [],
-        giphBig: []
+        giphBig: [],
+        characterName: null
         // element: Object
       };
     },
@@ -44,7 +53,7 @@ export default {
       async returnGiph (){
         this.getGiphy = await getApi.get("/search",{
           params:{
-            q: "luffy",
+            q: this.characterName,
             api_key: "Sg0MObO8eKdoHLtzgwD4kPF4slnSrYsT",
             
           }
@@ -66,10 +75,21 @@ export default {
           }
         }  
 
+      },
+      searchView(element){
+        this.giphLittle = []
+        this.giphMedium = []
+        this.giphBig = []
+        this.characterName = element
       }
     },
     mounted () {
       this.returnGiph()
+    },
+    watch:{
+      characterName: function (){
+        this.returnGiph()
+      }
     }
 };
 </script>
