@@ -1,15 +1,20 @@
 <template>
 <div class="body-nav">
   <nav>
-    <router-link to="/">Home</router-link> 
-    <router-link to="/about">About</router-link>
+    <router-link to="/" >Home</router-link> 
   </nav>
+    <SearchButton />
+
 </div>
 </template>
 
 <script>
+import SearchButton from '@/shared/components/SearchButton.vue';
   export default {
     name:'Navbar',
+    components:{
+      SearchButton
+    }
   }
 </script>
 

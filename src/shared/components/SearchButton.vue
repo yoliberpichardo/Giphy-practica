@@ -8,30 +8,33 @@
 </template>
 
 <script>
-export default {
-    emits:['searchproduct'],
-    data(){
-        return{
-            errors: [],
-            searchGif: ''
-        }
-    },
-    methods:{
-        agregarSearch(){
-            this.$emit('searchproduct', this.searchGif)
-            this.clearData()
+    import useStore from '../../helpers/stores';
+    const use = useStore()
+        
+    export default {
+        data(){
+            return{
+                errors: [],
+                searchGif: ''
+            }
         },
-        checkSearch(){
-            this.searchGif != '' ? this.agregarSearch() : this.errors.push('palabra requerida')
-            
-        },
-        clearData(){
-            this.errors = []
-            this.searchGif = ''
-        }
+        methods:{
+            agregarSearch(){
+                use.searchValue = this.searchGif
+                use.viewState()
+                this.clearData()
+            },
+            checkSearch(){
+                this.searchGif != '' ? this.agregarSearch() : this.errors.push('palabra requerida')
+                
+            },
+            clearData(){
+                this.errors = []
+                this.searchGif = ''
+            }
 
+        }
     }
-}
 </script>
 
 <style scoped>

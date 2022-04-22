@@ -1,7 +1,4 @@
 <template>
-  <SearchButton
-    @searchproduct="searchView($event)"
-  />
   <div class="body-giphy">
     <h1>Gifs pequeños</h1>
     <div class="img-container">
@@ -30,69 +27,65 @@
 </template>
 
 <script>
-import getApi from '../helpers/getApi';
-import SearchButton from '@/shared/components/SearchButton.vue';
+  // import useStore from '@/helpers/stores';
+  import getApi from '../helpers/getApi';
 
-export default {
-   name: 'GiphyHome',
-    components:{
-      SearchButton
-    },
-    data(){
-      return{
-        getGiphy: Promise,
-        giphy: Object,
-        giphLittle: [],
-        giphMedium: [],
-        giphBig: [],
-        characterName: null
-        // element: Object
-      };
-    },
-    methods: {
-      async returnGiph (){
-        this.getGiphy = await getApi.get("/search",{
-          params:{
-            q: this.characterName,
-            api_key: "Sg0MObO8eKdoHLtzgwD4kPF4slnSrYsT",
-            
-          }
-        })
-        this.giphy = this.getGiphy.data.data
+  export default {
+    name: 'GiphyHome',
+      data(){
+        return{
+          getGiphy: Promise,
+          giphy: Object,
+          giphLittle: [],
+          giphMedium: [],
+          giphBig: [],
+          searchElement: '',
+        };
+      },
+      methods: {
+        async returnGiph (){
+          this.getGiphy = await getApi.get("/search",{
+            params:{
+              q: this.searchElement,
+              api_key: "Sg0MObO8eKdoHLtzgwD4kPF4slnSrYsT",
+              
+            }
+          })
+          this.giphy = this.getGiphy.data.data
 
-        for (let element of this.giphy) {
-          // console.log(element.images.original)
-          if(parseInt(element.images.original.height) < 200){
-            this.giphLittle.push(element.images.original.url)
-            
-          } 
-          else if(parseInt(element.images.original.height) > 200 && parseInt(element.images.original.height) <300 ){
-            this.giphMedium.push(element.images.original.url)
+          for (let element of this.giphy) {
+            if(parseInt(element.images.original.height) < 200){
+              this.giphLittle.push(element.images.original.url)
+              
+            } 
+            else if(parseInt(element.images.original.height) > 200 && parseInt(element.images.original.height) <300 ){
+              this.giphMedium.push(element.images.original.url)
 
-          }   
-          else if(parseInt(element.images.original.height) > 300){
-            this.giphBig.push(element.images.original.url)
-          }
-        }  
+            }   
+            else if(parseInt(element.images.original.height) > 300){
+              this.giphBig.push(element.images.original.url)
+            }
+          }  
+
+        },
+        searchView(){
+          this.giphLittle = []
+          this.giphMedium = []
+          this.giphBig = []
+        }
+      },
+      mounted () {
+        this.returnGiph()
 
       },
-      searchView(element){
-        this.giphLittle = []
-        this.giphMedium = []
-        this.giphBig = []
-        this.characterName = element
+      watch:{
+        searchElement: function (){
+          this.searchView()
+          this.returnGiph()
+        }
       }
-    },
-    mounted () {
-      this.returnGiph()
-    },
-    watch:{
-      characterName: function (){
-        this.returnGiph()
-      }
-    }
-};
-</script>
+  };
+  </script>
 
 <style scoped>
     .body-giphy{

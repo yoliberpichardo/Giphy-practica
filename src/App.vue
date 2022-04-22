@@ -1,12 +1,19 @@
 <template>
-  <NavBar/>
+    <div>
+      <NavBar />
   <router-view/>
+    </div>
 </template>
 
 <script>
-  import NavBar from '@/shared/components/NavBar.vue';
+  import NavBar from '@/shared/components/NavBar.vue';  
 
 export default {
+  data(){
+    return{
+      dataSearch: null
+    }
+  },
   components:{
     NavBar,
   }

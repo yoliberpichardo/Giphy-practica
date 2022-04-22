@@ -6,12 +6,6 @@ const routes: Array<RouteRecordRaw> = [
     name: "giphyhome",
     component: () => import("@/components/GiphyHome.vue"),
   },
-  {
-    path: "/about",
-    name: "about",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  },
 ];
 
 const router = createRouter({
